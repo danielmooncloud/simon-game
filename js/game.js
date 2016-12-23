@@ -77,28 +77,28 @@ var controller = {
            controller.replay(controller.moveNumber - 1); 
           }, 1200) 
           this.moveTracker = 0;
-          }
+        }
 
         else if(color !== model.getSequence()[this.moveTracker - 1] && this.strict) {
           this.wrongPanel();
           setTimeout(function() {
             controller.restart();
           }, 1200);     
-          }
+        }
       
         else if(this.moveNumber === this.moveTracker && this.moveNumber !== 20) {
           this.userTurn = false;
           this.replay(this.moveNumber);
           this.moveTracker = 0;
 
-          }
+        }
 
         else if(this.moveNumber === this.moveTracker && this.moveNumber === 20) {
             this.victory(20);
-          }
         }
-      } 
-    },
+      }
+    } 
+  },
   
   resetSwitches: function() {
     this.gameOn = true;
@@ -118,10 +118,10 @@ var controller = {
    	var sequence = model.getSequence();
    	var counter = 0;
    	var interval = setInterval(function() {
-   		var panelColor = sequence[counter];
-   		var audio = model.getPanels()[panelColor].audio;
-   		view.renderPanel(panelColor, audio);
-   		counter++; 
+     	var panelColor = sequence[counter];
+     	var audio = model.getPanels()[panelColor].audio;
+     	view.renderPanel(panelColor, audio);
+     	counter++; 
       if(counter > num) {
         clearInterval(interval);
         setTimeout(function() {
@@ -131,8 +131,8 @@ var controller = {
           }
         }, 700);  
       }
-   	}, 800);
-   },
+    }, 800);
+  },
   
   strictMode: function() {
     if(!this.strict) {
@@ -164,7 +164,7 @@ var controller = {
         clearInterval(interval);
       }
     }, 200)
-  }
+  },
 }
 
 
