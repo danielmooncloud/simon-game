@@ -51,18 +51,16 @@ var controller = {
   
   init: function() {
     view.init();
-   },
-    gameOn: false,
-    userTurn: false,
-    moveNumber: 0,
-    moveTracker: 0,
-    strict: false,
-   
+  },
+  gameOn: false,
+  userTurn: false,
+  moveNumber: 0,
+  moveTracker: 0,
+  strict: false,
   incrementMoveNumber: function() {
     this.moveNumber++;
     view.renderDisplay(this.moveNumber);
-   },
-   
+  }, 
   userMove: function(color) { 	
     if(this.gameOn) {
       if(this.userTurn) {
@@ -70,7 +68,7 @@ var controller = {
        	view.renderPanel(color, audio);
        	this.moveTracker++;
       
-        if(color !== model.getSequence()[this.moveTracker - 1] && !this.strict) {
+        if(this.wrongMove(color) && !this.strict) {
           this.userTurn = false;
        		this.wrongPanel();
           setTimeout(function() {
@@ -79,41 +77,37 @@ var controller = {
           this.moveTracker = 0;
         }
 
-        else if(color !== model.getSequence()[this.moveTracker - 1] && this.strict) {
+        else if(this.wrongMove(color) && this.strict) {
           this.wrongPanel();
           setTimeout(function() {
             controller.restart();
           }, 1200);     
         }
       
-        else if(this.moveNumber === this.moveTracker && this.moveNumber !== 20) {
+        else if(this.rightMove() && !this.lastMove()) {
           this.userTurn = false;
           this.replay(this.moveNumber);
           this.moveTracker = 0;
 
         }
-
-        else if(this.moveNumber === this.moveTracker && this.moveNumber === 20) {
+        else if(this.rightMove() && this.lastMove()) {
             this.victory(20);
         }
       }
     } 
-  },
-  
+  }, 
   resetSwitches: function() {
     this.gameOn = true;
     this.userTurn = false;
     this.moveNumber = 0;
     this.moveTracker = 0;
    },
-   
   restart: function() {
     this.resetSwitches();
     view.renderDisplay(0);
    	model.genSequence();
    	this.replay(0);
    },
-
   replay: function(num) {
    	var sequence = model.getSequence();
    	var counter = 0;
@@ -133,7 +127,6 @@ var controller = {
       }
     }, 800);
   },
-  
   strictMode: function() {
     if(!this.strict) {
       this.strict = true;
@@ -143,15 +136,13 @@ var controller = {
       this.strict = false;
       view.renderNormal();
     }
-   },
-  
+  },
   wrongPanel: function() {
     var audio = model.getPanels().error.audio;
       setTimeout(function() {
       view.renderError(audio);  
       }, 800);     
     },
-
   victory: function(num) {
     var sequence = model.getSequence();
     var counter = 0;
@@ -165,6 +156,24 @@ var controller = {
       }
     }, 200)
   },
+  wrongMove: function(color) {
+    if(color !== model.getSequence()[this.moveTracker - 1]) {
+      return true;
+    }
+    return false
+  },
+  rightMove: function() {
+    if(this.moveNumber === this.moveTracker) {
+      return true;
+    }
+    return false;
+  },
+  lastMove: function() {
+    if(this.moveNumber === 20) {
+      return true;
+    }
+    return false;
+  }
 }
 
 
@@ -224,8 +233,7 @@ var view = {
 }
 
 $(document).ready(function() {
-
-controller.init();
+  controller.init();
 });
 
 })();
