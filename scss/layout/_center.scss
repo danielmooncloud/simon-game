@@ -1,0 +1,95 @@
+.center {
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  top: 135px;
+  left: 135px;
+  z-index: 100;
+  @media #{$break-phone} {
+    width: 200px;
+    height: 200px;
+    top: 90px;
+    left: 90px;
+  }
+}
+
+.simon {
+  margin-top: 40px;
+  margin-bottom: -70px;
+  @media #{$break-phone} {
+    margin-top: 22px;
+    margin-bottom: -45px;
+  }
+}
+
+.display {
+  height: 40px;
+  width: 40%;
+  margin: 90px auto 0px;
+  @media #{$break-phone} {
+    width: 80px;
+    height: 20%;
+    margin: 70px auto 40px;
+  }
+}
+
+
+button {
+  margin-top: 15px;
+  margin-left: 5px;
+  margin-right: 5px;
+  width: 20px;
+  height: 20px;
+  @media #{$break-phone} {
+    margin-top: 12px;
+    width: 7px;
+    height: 10px;
+  }
+}
+
+.starttext {
+  width: 30px;
+  height: 20px;
+  margin-left: 65px;
+  margin-right: 0px;
+}
+
+.starttext h6 {
+  @media #{break-phone} {
+    margin-top: 5px;
+    margin-left: -80px;
+  }
+}
+
+
+.stricttext {
+  width: 30px;
+  height: 20px;
+  margin-left: 115px;
+  margin-top: -30px;
+  margin-bottom: 60px;
+  @media #{$break-phone} {
+    margin-top: -30px;
+    margin-left: 100px;
+  }
+}
+
+.stricttext h6 {
+  @media #{break-phone} {
+    margin-left: -115px;
+  }
+}
+
+
+.light {
+  width: 10px;
+  height: 10px;
+  margin-left: 150px;
+  margin-top: 20px;
+  margin-bottom: -30px;
+  @media #{$break-phone} {
+    margin-left: 95px;
+    margin-top: -30px;
+    margin-bottom: 0px;
+  } 
+}

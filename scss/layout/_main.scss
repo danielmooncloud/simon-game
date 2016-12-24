@@ -1,0 +1,16 @@
+body {
+  margin: 0 auto;
+  max-width: 500px; 
+}
+
+.main {
+  position: relative;
+  height: 500px;
+  width: 500px;
+  margin: 0 auto;
+  margin-top: 50px;
+  @media #{$break-phone} {
+  	width: 400px;
+    height: 400px;
+  }
+}

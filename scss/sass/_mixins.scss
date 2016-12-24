@@ -1,0 +1,3 @@
+@mixin font-face($font-family) {
+	@import url('#{$path-font}#{$font-family}')
+}

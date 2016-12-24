@@ -1,0 +1,51 @@
+/* Font Styles */
+@include font-face('Orbitron');
+
+body {
+  font-family: $stack-orbitron;
+}
+
+.simon {
+  color: $white;
+}
+
+.center {
+  @extend %centered;
+}
+
+.display {
+  color: $red;
+}
+
+.starttext {
+ color: $white; 
+}
+
+.stricttext {
+ color: $white; 
+}
+
+h1 {
+  @media #{$break-phone} {
+  	font-size: 18px;
+  }
+}
+
+h2 {
+  @media #{$break-phone} {
+  	font-size: 20px;
+    margin-top: 0px;
+  } 
+}
+
+h6 {
+  @media #{$break-phone} {
+    font-size: 6px;
+  }
+}
+
+
+
+
+
+

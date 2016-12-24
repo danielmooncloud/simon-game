@@ -91,7 +91,7 @@ var controller = {
 
         }
         else if(this.rightMove() && this.lastMove()) {
-            this.victory(20);
+          this.victory(20);
         }
       }
     } 
