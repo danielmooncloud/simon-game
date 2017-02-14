@@ -1,6 +1,6 @@
 body {
   background-color: $grey;
-  @include image(background);
+  @include image('background');
 }
 
 .main {
