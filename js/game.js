@@ -14,7 +14,7 @@ var model = {
 		audio: new Audio('https://s3.amazonaws.com/freecodecamp/simonSound2.mp3')
 			},
 		
-		yellow:   {
+		yellow: {
 		name: 'yellow',
 		audio: new Audio('https://s3.amazonaws.com/freecodecamp/simonSound3.mp3')
 			},
@@ -36,7 +36,7 @@ var model = {
 		var colors = ['green', 'red', 'yellow', 'blue'];
 		this.sequence = [];
 		for(var i = 0; i < 20; i++) {
-			var random = Math.floor(Math.random() * (colors.length - 1));
+			var random = Math.floor(Math.random() * 3);
 			this.sequence.push(colors[random]);
 		}
 	},
@@ -128,14 +128,8 @@ var controller = {
     }, 800);
   },
   strictMode: function() {
-    if(!this.strict) {
-      this.strict = true;
-      view.renderStrict();
-    }
-    else if(this.strict) {
-      this.strict = false;
-      view.renderNormal();
-    }
+    this.strict = !this.strict
+    view.renderStrict(this.strict);
   },
   wrongPanel: function() {
     var audio = model.getPanels().error.audio;
@@ -224,11 +218,9 @@ var view = {
   renderError: function(sound) {
   	sound.play();
   },
-  renderStrict: function() {
-    this.$light.addClass('redbutton');
-  },
-  renderNormal: function() {
-    this.$light.removeClass('redbutton');
+  renderStrict: function(bool) {
+    if(bool) this.$light.addClass('redbutton')
+    else this.$light.removeClass('redbutton');
   }
 }
 
