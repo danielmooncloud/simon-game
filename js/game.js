@@ -1,232 +1,135 @@
-(function() {
-'use strict';
+function Game() {
+	'use strict';
 
-var model = {
-	sequence: [],
-	panels: {
-		red: {
-		name: 'red',
-		audio: new Audio('https://s3.amazonaws.com/freecodecamp/simonSound1.mp3')
-			},		
-		
-		green:  {
-		name: 'green',
-		audio: new Audio('https://s3.amazonaws.com/freecodecamp/simonSound2.mp3')
-			},
-		
-		yellow: {
-		name: 'yellow',
-		audio: new Audio('https://s3.amazonaws.com/freecodecamp/simonSound3.mp3')
-			},
-		
-		blue:  {
-		name: 'blue',
-		audio: new Audio('https://s3.amazonaws.com/freecodecamp/simonSound4.mp3')
-			},
-		
-		error: {
-		name: 'error',
-		audio: new Audio("http://www.soundjay.com/misc/fail-buzzer-01.wav")
-			}
-	}, 
-	getPanels: function() {
-		return this.panels;
-	},
-	genSequence: function() {
-		var colors = ['green', 'red', 'yellow', 'blue'];
-		this.sequence = [];
-		for(var i = 0; i < 20; i++) {
-			var random = Math.floor(Math.random() * 3);
-			this.sequence.push(colors[random]);
-		}
-	},
-	getSequence: function() {
-		return this.sequence;
+	var board = new Board();
+	var gameOn = false;
+	var userTurn = false;
+	// moveNumber counts what move the game is on
+	var moveNumber = 0;
+	//moveTracker counts how many panels you've clicked on your turn
+	var moveTracker = 0;
+	var strict = false;
+	var self = this;
+
+	this.incrementMoveNumber = function() {
+		moveNumber++;
+		gui.renderDisplay(moveNumber);
 	}
 
+	this.userMove = function(color) {
+		if(gameOn && userTurn) {
+			var panel = board.getPanels()[color];
+			gui.renderPanel(panel);
+			moveTracker++;
+			
+
+			if(this.wrongMove(color) && !strict) {
+				userTurn = false;
+				this.errorSound();
+				setTimeout(function() {
+					self.replay(moveNumber - 1)
+				}, 1200)
+				moveTracker = 0;
+			}
+
+			else if(this.wrongMove(color) && strict) {
+				userTurn = false;
+				this.errorSound();
+				setTimeout(function() {
+					self.restart();
+				}, 1200);
+			}
+
+			else if(this.rightMove() && !this.lastMove()) {
+				userTurn = false;
+				this.replay(moveNumber);
+				moveTracker = 0;
+			}
+
+			else if(this.rightMove() && this.lastMove()) {
+				userTurn = false;
+				this.victory();
+			}
+		}	
+	}
+
+	this.resetSwitches = function() {
+		gameOn = true;
+		userTurn = false;
+		moveNumber = 0;
+		moveTracker = 0;
+	}
+
+	this.restart = function() {
+    	this.resetSwitches();
+   	 	gui.renderDisplay(0);
+   		board.setSequence();
+   		this.replay(0);
+   }
+
+   this.replay = function(num) {
+    	var counter = 0;
+    	var interval = setInterval(function() {
+    		var panel = board.getSequence()[counter];
+    		gui.renderPanel(panel);
+    		counter++;
+    		if(counter > num) {
+    			clearInterval(interval);
+    			setTimeout(function() {
+    				userTurn = true;
+    				if(num === moveNumber) {
+    					self.incrementMoveNumber();
+    				}
+    			}, 700)
+    		}
+    	}, 800)
+    }
+
+    this.strictMode = function() {
+    	strict = !strict
+    	gui.renderStrict(strict);
+  	}
+
+    this.errorSound = function() {
+    	var panel = board.getPanels().error;
+      	setTimeout(function() {
+      		gui.renderPanel(panel);  
+      	}, 800);     
+    }
+
+    this.wrongMove = function(color) {
+    	if(color !== board.getSequence()[moveTracker - 1].color) {
+      		return true;
+    	}
+    	return false
+    }
+
+    this.rightMove = function() {
+    	if(moveNumber === moveTracker) {
+      		return true;
+    	}
+    	return false;
+  	}
+
+    this.lastMove = function() {
+    	if(moveNumber === 20) {
+      		return true;
+    	}
+    	return false;
+  	},
+
+  	this.victory = function() {
+	    var sequence = board.getSequence();
+	    var counter = 0;
+	    var interval = setInterval(function() {
+	    	var panel = sequence[counter];
+	    	view.renderPanel(panel);
+	    	counter++; 
+	    	if(counter === 19) {
+	    		clearInterval(interval);
+	      	}
+	    }, 200)
+  	}
 }
 
-
-var controller = {
-  
-  init: function() {
-    view.init();
-  },
-  gameOn: false,
-  userTurn: false,
-  moveNumber: 0,
-  moveTracker: 0,
-  strict: false,
-  incrementMoveNumber: function() {
-    this.moveNumber++;
-    view.renderDisplay(this.moveNumber);
-  }, 
-  userMove: function(color) { 	
-    if(this.gameOn) {
-      if(this.userTurn) {
-       	var audio = model.getPanels()[color].audio;
-       	view.renderPanel(color, audio);
-       	this.moveTracker++;
-      
-        if(this.wrongMove(color) && !this.strict) {
-          this.userTurn = false;
-       		this.wrongPanel();
-          setTimeout(function() {
-           controller.replay(controller.moveNumber - 1); 
-          }, 1200) 
-          this.moveTracker = 0;
-        }
-
-        else if(this.wrongMove(color) && this.strict) {
-          this.wrongPanel();
-          setTimeout(function() {
-            controller.restart();
-          }, 1200);     
-        }
-      
-        else if(this.rightMove() && !this.lastMove()) {
-          this.userTurn = false;
-          this.replay(this.moveNumber);
-          this.moveTracker = 0;
-
-        }
-        else if(this.rightMove() && this.lastMove()) {
-          this.victory(20);
-        }
-      }
-    } 
-  }, 
-  resetSwitches: function() {
-    this.gameOn = true;
-    this.userTurn = false;
-    this.moveNumber = 0;
-    this.moveTracker = 0;
-   },
-  restart: function() {
-    this.resetSwitches();
-    view.renderDisplay(0);
-   	model.genSequence();
-   	this.replay(0);
-   },
-  replay: function(num) {
-   	var sequence = model.getSequence();
-   	var counter = 0;
-   	var interval = setInterval(function() {
-     	var panelColor = sequence[counter];
-     	var audio = model.getPanels()[panelColor].audio;
-     	view.renderPanel(panelColor, audio);
-     	counter++; 
-      if(counter > num) {
-        clearInterval(interval);
-        setTimeout(function() {
-          controller.userTurn = true;
-          if(num === controller.moveNumber) {
-            controller.incrementMoveNumber();
-          }
-        }, 700);  
-      }
-    }, 800);
-  },
-  strictMode: function() {
-    this.strict = !this.strict
-    view.renderStrict(this.strict);
-  },
-  wrongPanel: function() {
-    var audio = model.getPanels().error.audio;
-      setTimeout(function() {
-      view.renderError(audio);  
-      }, 800);     
-    },
-  victory: function(num) {
-    var sequence = model.getSequence();
-    var counter = 0;
-    var interval = setInterval(function() {
-      var panelColor = sequence[counter];
-      var audio = model.getPanels()[panelColor].audio;
-      view.renderPanel(panelColor, audio);
-      counter++; 
-      if(counter === (num - 1)) {
-        clearInterval(interval);
-      }
-    }, 200)
-  },
-  wrongMove: function(color) {
-    if(color !== model.getSequence()[this.moveTracker - 1]) {
-      return true;
-    }
-    return false
-  },
-  rightMove: function() {
-    if(this.moveNumber === this.moveTracker) {
-      return true;
-    }
-    return false;
-  },
-  lastMove: function() {
-    if(this.moveNumber === 20) {
-      return true;
-    }
-    return false;
-  }
-}
-
-
-var view = {
-  init: function() {
-    this.cacheDom();
-    this.bindEvents();
-  },
-  cacheDom: function() {
-    this.$panel = $('.col-xs-6');
-    this.$start = $('.start');
-    this.$strict = $('.strict');
-    this.$display = $('.display');
-    this.$light = $('.light');
-  },
-  bindEvents: function() {
-    this.$panel.click(function() {
-    	view.handlePanel.call(this)
-    });
-    this.$start.click(function() {
-    	view.handleStart();
-    });
-    this.$strict.click(function() {
-    	view.handleStrict();
-    })
-  },
-  handlePanel: function() {
-  	var $id = $(this).attr('id');
-  	controller.userMove($id);
-  },
-  handleStart: function() {
-  	controller.restart();
-  },
-  handleStrict: function() {
-    controller.strictMode();
-  },
-  renderPanel: function(colorId, sound) {
-  	var $colorId = $('#' + colorId);
-  	sound.play();
-  	$colorId.addClass('activated');
-  	setTimeout(function() {
-  		$colorId.removeClass('activated');
-  	}, 300) 		
-  },
-  renderDisplay: function(text) {
-  	this.$display.html('<h2>' + text + '</h2>');
-  },
-  renderError: function(sound) {
-  	sound.play();
-  },
-  renderStrict: function(bool) {
-    if(bool) this.$light.addClass('redbutton')
-    else this.$light.removeClass('redbutton');
-  }
-}
-
-$(document).ready(function() {
-  controller.init();
-});
-
-})();
 
