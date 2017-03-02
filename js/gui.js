@@ -1,6 +1,6 @@
 'use strict';
-var gui = {
 
+var gui = {
 
 	init: function() {
 		this.cacheDom();
@@ -42,8 +42,8 @@ var gui = {
 	},
 
 	renderPanel: function(panel) {
-		var $panelColor = $('#' + panel.color);
-		panel.audio.play();
+		var $panelColor = $('#' + panel.getColor());
+		panel.getAudio().play();
 		$panelColor.addClass('activated');
 		setTimeout(function() {
 			$panelColor.removeClass('activated');
@@ -58,8 +58,6 @@ var gui = {
     	if(bool) this.$light.addClass('redbutton')
     	else this.$light.removeClass('redbutton');
   	}
-
-
 	
 }
 

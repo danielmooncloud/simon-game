@@ -91,14 +91,14 @@ function Game() {
   	}
 
     this.errorSound = function() {
-    	var panel = board.getPanels().error;
+    	var error = board.getError();
       	setTimeout(function() {
-      		gui.renderPanel(panel);  
+      		gui.renderPanel(error);  
       	}, 800);     
     }
 
     this.wrongMove = function(color) {
-    	if(color !== board.getSequence()[moveTracker - 1].color) {
+    	if(color !== board.getSequence()[moveTracker - 1].getColor()) {
       		return true;
     	}
     	return false

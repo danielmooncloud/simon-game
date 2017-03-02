@@ -5,16 +5,12 @@ function Board() {
 	var self = this
 	var sequence = [];
 	var panels = {};
+	var error = new Error();
 
 	this.setPanels = function() {
 		colors.forEach(function(color, i) {
 			panels[color] = new Panel(color, i + 1)
 		});
-
-		panels["error"] = {
-			color: "error",
-			audio: new Audio("http://www.soundjay.com/misc/fail-buzzer-01.wav")	
-		}
 	}
 
 	this.setPanels();
@@ -36,6 +32,10 @@ function Board() {
 
 	this.getSequence = function() {
 		return sequence;
+	}
+
+	this.getError = function() {
+		return error;
 	}
 
 }
