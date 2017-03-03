@@ -11,62 +11,18 @@ function Game() {
 	var strict = false;
 	var self = this;
 
-	this.incrementMoveNumber = function() {
+	var incrementMoveNumber = function() {
 		moveNumber++;
 		gui.renderDisplay(moveNumber);
 	}
 
-	this.userMove = function(color) {
-		if(gameOn && userTurn) {
-			var panel = board.getPanels()[color];
-			gui.renderPanel(panel);
-			moveTracker++;
-			
-
-			if(this.wrongMove(color) && !strict) {
-				userTurn = false;
-				this.errorSound();
-				setTimeout(function() {
-					self.replay(moveNumber - 1)
-				}, 1200)
-				moveTracker = 0;
-			}
-
-			else if(this.wrongMove(color) && strict) {
-				userTurn = false;
-				this.errorSound();
-				setTimeout(function() {
-					self.restart();
-				}, 1200);
-			}
-
-			else if(this.rightMove() && !this.lastMove()) {
-				userTurn = false;
-				this.replay(moveNumber);
-				moveTracker = 0;
-			}
-
-			else if(this.rightMove() && this.lastMove()) {
-				userTurn = false;
-				this.victory();
-			}
-		}	
-	}
-
-	this.resetSwitches = function() {
+	var resetSwitches = function() {
 		gameOn = true;
 		userTurn = false;
 		moveNumber = moveTracker = 0;
 	}
 
-	this.restart = function() {
-    	this.resetSwitches();
-   	 	gui.renderDisplay(0);
-   		board.setSequence();
-   		this.replay(0);
-   }
-
-   this.replay = function(num) {
+	var replay = function(num) {
     	var counter = 0;
     	var interval = setInterval(function() {
     		var panel = board.getSequence()[counter];
@@ -77,47 +33,42 @@ function Game() {
     			setTimeout(function() {
     				userTurn = true;
     				if(num === moveNumber) {
-    					self.incrementMoveNumber();
+    					incrementMoveNumber();
     				}
     			}, 700)
     		}
     	}, 800)
     }
 
-    this.strictMode = function() {
-    	strict = !strict
-    	gui.renderStrict(strict);
-  	}
-
-    this.errorSound = function() {
+   	var errorSound = function() {
     	var error = board.getError();
       	setTimeout(function() {
       		gui.renderPanel(error);  
       	}, 800);     
     }
 
-    this.wrongMove = function(color) {
+    var wrongMove = function(color) {
     	if(color !== board.getSequence()[moveTracker - 1].getColor()) {
       		return true;
     	}
     	return false
     }
 
-    this.rightMove = function() {
+    var rightMove = function() {
     	if(moveNumber === moveTracker) {
       		return true;
     	}
     	return false;
   	}
 
-    this.lastMove = function() {
+    var lastMove = function() {
     	if(moveNumber === 20) {
       		return true;
     	}
     	return false;
-  	},
+  	}
 
-  	this.victory = function() {
+  	var victory = function() {
 	    var sequence = board.getSequence();
 	    var counter = 0;
 	    var interval = setInterval(function() {
@@ -129,6 +80,57 @@ function Game() {
 	      	}
 	    }, 200)
   	}
+
+	this.userMove = function(color) {
+		if(gameOn && userTurn) {
+			var panel = board.getPanels()[color];
+			gui.renderPanel(panel);
+			moveTracker++;
+			
+
+			if(wrongMove(color) && !strict) {
+				userTurn = false;
+				errorSound();
+				setTimeout(function() {
+					replay(moveNumber - 1)
+				}, 1200)
+				moveTracker = 0;
+			}
+
+			else if(wrongMove(color) && strict) {
+				userTurn = false;
+				errorSound();
+				setTimeout(function() {
+					self.restart();
+				}, 1200);
+			}
+
+			else if(rightMove() && !lastMove()) {
+				userTurn = false;
+				replay(moveNumber);
+				moveTracker = 0;
+			}
+
+			else if(rightMove() && lastMove()) {
+				userTurn = false;
+				victory();
+			}
+		}	
+	}
+
+	this.restart = function() {
+    	resetSwitches();
+   	 	gui.renderDisplay(0);
+   		board.setSequence();
+   		replay(0);
+    }
+
+    this.strictMode = function() {
+    	strict = !strict
+    	gui.renderStrict(strict);
+  	}
+
+    
 }
 
 
