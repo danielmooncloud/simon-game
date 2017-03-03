@@ -56,8 +56,7 @@ function Game() {
 	this.resetSwitches = function() {
 		gameOn = true;
 		userTurn = false;
-		moveNumber = 0;
-		moveTracker = 0;
+		moveNumber = moveTracker = 0;
 	}
 
 	this.restart = function() {
