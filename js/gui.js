@@ -18,27 +18,15 @@ var gui = {
 	
 	bindEvents: function() {
 		this.$panel.click(function() {
-			gui.handelPanel.call(this);
+			var $id = $(this).attr("id")
+			game.userMove($id)
 		});
 		this.$start.click(function() {
-    		gui.handleStart();
+    		game.restart();
     	});
     	this.$strict.click(function() {
-    		gui.handleStrict();
+    		game.strictMode();
     	});
-	},
-
-	handelPanel: function() {
-		var $id = $(this).attr("id")
-		game.userMove($id)
-	},
-
-	handleStart: function() {
-		game.restart();
-	},
-
-	handleStrict: function() {
-		game.strictMode();
 	},
 
 	renderPanel: function(panel) {
