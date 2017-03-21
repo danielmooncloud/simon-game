@@ -1,5 +1,7 @@
-function Game() {
-	'use strict';
+var Board = require("./board");
+
+
+function Game(view) {
 
 	var board = new Board();
 	var gameOn = false;
@@ -13,7 +15,7 @@ function Game() {
 
 	var incrementMoveNumber = function() {
 		moveNumber++;
-		gui.renderDisplay(moveNumber);
+		view.renderDisplay(moveNumber);
 	}
 
 	var resetSwitches = function() {
@@ -26,7 +28,7 @@ function Game() {
     	var counter = 0;
     	var interval = setInterval(function() {
     		var panel = board.getSequence()[counter];
-    		gui.renderPanel(panel);
+    		view.renderPanel(panel);
     		counter++;
     		if(counter > num) {
     			clearInterval(interval);
@@ -43,7 +45,7 @@ function Game() {
    	var errorSound = function() {
     	var error = board.getError();
       	setTimeout(function() {
-      		gui.renderPanel(error);  
+      		view.renderPanel(error);  
       	}, 800);     
     }
 
@@ -84,7 +86,7 @@ function Game() {
 	this.userMove = function(color) {
 		if(gameOn && userTurn) {
 			var panel = board.getPanels()[color];
-			gui.renderPanel(panel);
+			view.renderPanel(panel);
 			moveTracker++;
 			
 
@@ -120,14 +122,14 @@ function Game() {
 
 	this.restart = function() {
     	resetSwitches();
-   	 	gui.renderDisplay(0);
+   	 	view.renderDisplay(0);
    		board.setSequence();
    		replay(0);
     }
 
     this.strictMode = function() {
     	strict = !strict
-    	gui.renderStrict(strict);
+    	view.renderStrict(strict);
   	}
 
     

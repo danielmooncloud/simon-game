@@ -1,5 +1,8 @@
-function Board() {
-	'use strict';
+var Error = require("./panel").Error; 
+var Panel = require("./panel").Panel;
+
+
+module.exports = function Board() {
 
 	var colors = ["red", "green", "yellow", "blue"]
 	var self = this

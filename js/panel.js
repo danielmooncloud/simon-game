@@ -1,4 +1,4 @@
-function Panel(color, num) {
+module.exports = function Panel(color, num) {
 	'use strict';
 
 	var color = color;
@@ -15,7 +15,7 @@ function Panel(color, num) {
 
 
 
-function Error() {
+module.exports = function Error() {
 	'use strict';
 
 	var audio = new Audio("http://www.soundjay.com/misc/fail-buzzer-01.wav");

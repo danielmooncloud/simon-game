@@ -1,52 +1,60 @@
-'use strict';
+var Game = require("./game");
 
-var gui = {
 
-	init: function() {
-		this.cacheDom();
-		this.bindEvents();
-	},
-	
-	cacheDom: function() {
-		this.$main = $('.main');
-		this.$panel = this.$main.find('.col-xs-6');
-	    this.$start = this.$main.find('.start');
-	    this.$strict = this.$main.find('.strict');
-	    this.$display = this.$main.find('.display');
-	    this.$light = this.$main.find('.light');
-	},
-	
-	bindEvents: function() {
-		this.$panel.click(function() {
-			var $id = $(this).attr("id")
-			game.userMove($id)
-		});
-		this.$start.click(function() {
-    		game.restart();
-    	});
-    	this.$strict.click(function() {
-    		game.strictMode();
-    	});
-	},
+$(document).ready(function() {
+	var gui = {
 
-	renderPanel: function(panel) {
-		var $panelColor = $('#' + panel.getColor());
-		panel.getAudio().play();
-		$panelColor.addClass('activated');
-		setTimeout(function() {
-			$panelColor.removeClass('activated');
-		}, 300)
-	},
+		init: function() {
+			this.cacheDom();
+			this.bindEvents();
+		},
+		
+		cacheDom: function() {
+			this.$main = $('.main');
+			this.$panel = this.$main.find('.col-xs-6');
+			this.$start = this.$main.find('.start');
+			this.$strict = this.$main.find('.strict');
+			this.$display = this.$main.find('.display');
+			this.$light = this.$main.find('.light');
+		},
+		
+		bindEvents: function() {
+			this.$panel.click(function() {
+				var $id = $(this).attr("id")
+				game.userMove($id)
+			});
+			this.$start.click(function() {
+				game.restart();
+			});
+			this.$strict.click(function() {
+				game.strictMode();
+			});
+		},
 
-	renderDisplay: function(text) {
-  		this.$display.html('<h2>' + text + '</h2>');
-  	},
+		renderPanel: function(panel) {
+			var $panelColor = $('#' + panel.getColor());
+			panel.getAudio().play();
+			$panelColor.addClass('activated');
+			setTimeout(function() {
+				$panelColor.removeClass('activated');
+			}, 300)
+		},
 
-  	renderStrict: function(bool) {
-    	if(bool) this.$light.addClass('redbutton')
-    	else this.$light.removeClass('redbutton');
-  	}
-	
-}
+		renderDisplay: function(text) {
+			this.$display.html('<h2>' + text + '</h2>');
+		},
+
+		renderStrict: function(bool) {
+			if(bool) this.$light.addClass('redbutton')
+			else this.$light.removeClass('redbutton');
+		}
+		
+	}
+
+	var game = new Game(gui);
+
+
+	gui.init();
+})
 
 
