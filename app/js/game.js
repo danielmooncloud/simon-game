@@ -1,7 +1,7 @@
 var Board = require("./board");
 
 
-function Game(view) {
+module.exports = function Game(view) {
 
 	var board = new Board();
 	var gameOn = false;

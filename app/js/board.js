@@ -1,4 +1,4 @@
-var Error = require("./panel").Error; 
+var ErrorPanel = require("./panel").ErrorPanel; 
 var Panel = require("./panel").Panel;
 
 
@@ -8,7 +8,7 @@ module.exports = function Board() {
 	var self = this
 	var sequence = [];
 	var panels = {};
-	var error = new Error();
+	var error = new ErrorPanel();
 
 	this.setPanels = function() {
 		colors.forEach(function(color, i) {

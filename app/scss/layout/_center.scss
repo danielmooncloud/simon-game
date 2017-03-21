@@ -8,8 +8,8 @@
   @media #{$break-phone} {
     width: 200px;
     height: 200px;
-    top: 90px;
-    left: 90px;
+    top: 100px;
+    left: 100px;
   }
 }
 
@@ -17,18 +17,18 @@
   margin-top: 40px;
   margin-bottom: -70px;
   @media #{$break-phone} {
-    margin-top: 22px;
+    margin-top: 30px;
     margin-bottom: -45px;
   }
 }
 
 .display {
-  height: 40px;
+  height: 30px;
   width: 40%;
   margin: 90px auto 0px;
   @media #{$break-phone} {
     width: 80px;
-    height: 20%;
+    height: 15%;
     margin: 70px auto 40px;
   }
 }
@@ -50,34 +50,32 @@ button {
 .starttext {
   width: 30px;
   height: 20px;
-  margin-left: 65px;
-  margin-right: 0px;
+  padding: 0;
+  margin-top: 15px;
+  margin-left: 75px;
+  @media #{$break-phone} {
+    margin-left: 65px;
+  }
 }
 
 .starttext h6 {
-  @media #{break-phone} {
-    margin-top: 5px;
-    margin-left: -80px;
-  }
+  margin: 0;
 }
 
 
 .stricttext {
+  margin-top: -20px;
+  margin-left: 115px;
+  padding: 0;
   width: 30px;
   height: 20px;
-  margin-left: 115px;
-  margin-top: -30px;
-  margin-bottom: 60px;
   @media #{$break-phone} {
-    margin-top: -30px;
     margin-left: 100px;
   }
 }
 
 .stricttext h6 {
-  @media #{break-phone} {
-    margin-left: -115px;
-  }
+  margin: 0;
 }
 
 

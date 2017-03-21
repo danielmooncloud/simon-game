@@ -1,3 +1,5 @@
+//require("bootstrap-loader");
+require("../scss/application.scss");
 var Game = require("./game");
 
 

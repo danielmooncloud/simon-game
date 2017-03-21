@@ -1,0 +1,47 @@
+
+.row {
+  height: 50%;
+  width: 100%;  
+  margin: 0 auto;
+  padding: 0;
+  position: absolute;
+}
+
+.row.one {
+	top: 0;
+	left: 0;
+}
+
+.row.two {
+	top: 50%;
+	left: 0;
+}
+
+.col-xs-6 {
+  height: 100%; 
+  width: 50%;
+}
+
+#green {
+	position: absolute;
+	top: 0%;
+	left: 0%;
+}
+
+#red {
+	position: absolute;
+	top: 0%;
+	left: 50%;
+}
+
+#yellow {
+	position: absolute;
+	top: 0%;
+	left: 0%;
+}
+
+#blue {
+	position: absolute;
+	top: 0%;
+	left: 50%;
+}
