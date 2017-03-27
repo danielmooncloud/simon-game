@@ -2,8 +2,7 @@ import Board from "./board";
 
 
 export default class Game {
-	constructor(view) {
-		this._view = view;
+	constructor() {
 		this._board = new Board();
 		this._gameOn = false;
 		this._userTurn = false;
