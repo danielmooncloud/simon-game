@@ -88,10 +88,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Game = function () {
-	function Game(view) {
+	function Game() {
 		_classCallCheck(this, Game);
 
-		this._view = view;
 		this._board = new _board2.default();
 		this._gameOn = false;
 		this._userTurn = false;
@@ -241,7 +240,9 @@ var Game = function () {
 		}
 	}, {
 		key: "view",
-		set: function set(view) {}
+		set: function set(view) {
+			this._view = view;
+		}
 	}]);
 
 	return Game;
