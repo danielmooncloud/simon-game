@@ -23,15 +23,7 @@ module.exports = {
 			{
 				test: /\.png?/,
 				loader: "file-loader?outputPath=images/"
-			},
-			{ 
-      			test: /bootstrap\/dist\/js\/umd\//, 
-      			loaders: ['imports?jQuery=jquery'] 
-      		},
-      		{ 
-      			test: /\.json$/, 
-      			loader: 'json' 
-      		}
+			}
 		]
 	},
 

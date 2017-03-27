@@ -1,44 +1,33 @@
-var ErrorPanel = require("./panel").ErrorPanel; 
-var Panel = require("./panel").Panel;
+import { Panel, ErrorPanel } from "./panel"; 
 
 
-module.exports = function Board() {
 
-	var colors = ["red", "green", "yellow", "blue"]
-	var self = this
-	var sequence = [];
-	var panels = {};
-	var error = new ErrorPanel();
-
-	this.setPanels = function() {
-		colors.forEach(function(color, i) {
-			panels[color] = new Panel(color, i + 1)
-		});
-	}
-
-	this.setPanels();
-
-	this.getPanels = function() {
-		return panels;
-	}
-
-	
-	this.setSequence = function() {	
-		for(var i = 0; i < 20; i++) {
-			var random = Math.floor(Math.random() * 4);
-			var color = colors[random];
-			sequence[i] = new Panel(color, random + 1)
+export default class Board {
+	constructor() {
+		this._colors = ["red", "green", "yellow", "blue"];
+		this._sequence = [];
+		this._panels = {};
+		this._error = new ErrorPanel();
+		this._colors.forEach((color, i) => {
+			this._panels[color] = new Panel(color, i + 1);
+		})
+		for(let i = 0; i < 20; i++) {
+			let random = Math.floor(Math.random() * 4);
+			let color = this._colors[random];
+			this._sequence[i] = new Panel(color, random + 1);
 		}
-	};
-	
-	this.setSequence();
-
-	this.getSequence = function() {
-		return sequence;
 	}
 
-	this.getError = function() {
-		return error;
+	get panels() {
+		return this._panels;
+	}
+
+	get sequence() {
+		return this._sequence;
+	}
+
+	get error() {
+		return this._error;
 	}
 
 }

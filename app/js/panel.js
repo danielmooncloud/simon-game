@@ -1,30 +1,31 @@
-module.exports.Panel = function Panel(color, num) {
-	'use strict';
-
-	var color = color;
-	var audio = new Audio(`https://s3.amazonaws.com/freecodecamp/simonSound${num}.mp3`)
-
-	this.getColor = function() {
-		return color;
+class Panel {
+	constructor(color, num) {
+		this._color = color;
+		this._audio = new Audio(`https://s3.amazonaws.com/freecodecamp/simonSound${num}.mp3`)
 	}
 
-	this.getAudio = function() {
-		return audio;
+	get color () {
+		return this._color;
+	}
+
+	get audio() {
+		return this._audio;
 	}
 }
 
 
+class ErrorPanel {
+	constructor() {
+		this._audio = new Audio("http://www.soundjay.com/misc/fail-buzzer-01.wav")
+	}
 
- module.exports.ErrorPanel = function ErrorPanel() {
-	'use strict';
-
-	var audio = new Audio("http://www.soundjay.com/misc/fail-buzzer-01.wav");
-
-	this.getColor = function() {
+	get color() {
 		return "error";
 	}
 
-	this.getAudio = function() {
-		return audio;
+	get audio() {
+		return this._audio;
 	}
 }
+
+export {Panel, ErrorPanel}
