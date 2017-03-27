@@ -13,7 +13,7 @@ export default class Game {
 	}
 
 	set view(view) {
-		
+		this._view = view;
 	}
 
 	init(view) {
