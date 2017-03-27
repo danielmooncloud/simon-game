@@ -13,7 +13,7 @@ export default class Game {
 	}
 
 	set view(view) {
-		this._view = view;
+		
 	}
 
 	init(view) {
@@ -33,77 +33,77 @@ export default class Game {
 	}
 
 	replay(num) {
-    	let counter = 0;
-    	const interval = setInterval(() => {
-    		var panel = this._board.sequence[counter];
-    		this._view.renderPanel(panel);
-    		counter++;
-    		if(counter > num) {
-    			clearInterval(interval);
-    			setTimeout(() => {
-    				this._userTurn = true;
-    				if(num === this._moveNumber) {
-    					this.incrementMoveNumber();
-    				}
-    			}, 700)
-    		}
-    	}, 800)
-    }
+		let counter = 0;
+		const interval = setInterval(() => {
+			var panel = this._board.sequence[counter];
+			this._view.renderPanel(panel);
+			counter++;
+			if(counter > num) {
+				clearInterval(interval);
+				setTimeout(() => {
+					this._userTurn = true;
+					if(num === this._moveNumber) {
+						this.incrementMoveNumber();
+					}
+				}, 700);
+			}
+		}, 800);
+	}
 
-   	errorSound() {
-    	var error = this._board.error;
-      	setTimeout(() => {
-      		this._view.renderPanel(error);  
-      	}, 800);     
-    }
+	errorSound() {
+		const error = this._board.error;
+		setTimeout(() => {
+			this._view.renderPanel(error);  
+		}, 800);     
+	}
 
-    wrongMove(color) {
-    	if(color !== this._board.sequence[this._moveTracker - 1].color) {
-      		return true;
-    	}
-    	return false
-    }
+	wrongMove(color) {
+		if(color !== this._board.sequence[this._moveTracker - 1].color) {
+			return true;
+		}
+		return false;
+	}
 
-    rightMove() {
-    	if(this._moveNumber === this._moveTracker) {
-      		return true;
-    	}
-    	return false;
-  	}
+	rightMove() {
+		if(this._moveNumber === this._moveTracker) {
+			return true;
+		}
+		return false;
+	}
 
-    lastMove() {
-    	if(this._moveNumber === this._board.sequence.length) {
-      		return true;
-    	}
-    	return false;
-  	}
+	lastMove() {
+		if(this._moveNumber === this._board.sequence.length) {
+			return true;
+		}
+		return false;
+	}
 
-  	victory() {
-	    const sequence = this._board.sequence;
-	    let counter = 0;
-	    const interval = setInterval(() => {
-	    	let panel = sequence[counter];
-	    	this._view.renderPanel(panel);
-	    	counter++; 
-	    	if(counter === sequence.length) {
-	    		clearInterval(interval);
-	      	}
-	    }, 200)
-  	}
+	victory() {
+		const sequence = this._board.sequence;
+		let counter = 0;
+		const interval = setInterval(() => {
+			let panel = sequence[counter];
+			this._view.renderPanel(panel);
+			counter++; 
+			if(counter === sequence.length) {
+				clearInterval(interval);
+			}
+		}, 200);
+	}
 
 	userMove(color) {
 		if(this._gameOn && this._userTurn) {
 			var panel = this._board.panels[color];
 			this._view.renderPanel(panel);
 			this._moveTracker++;
-			
+
 
 			if(this.wrongMove(color) && !this._strict) {
 				this._userTurn = false;
 				this.errorSound();
 				setTimeout(() => {
-					this.replay(this._moveNumber - 1)
-				}, 1200)
+					this.replay(this._moveNumber - 1);
+				}, 1200);
 				this._moveTracker = 0;
 			}
 
@@ -131,17 +131,17 @@ export default class Game {
 	}
 
 	restart() {
-    	this.resetSwitches();
-   	 	this._view.renderDisplay(0);
-   		this._board = new Board();
-   		this.replay(0);
-    }
+		this.resetSwitches();
+		this._view.renderDisplay(0);
+		this._board = new Board();
+		this.replay(0);
+	}
 
-    strictMode() {
-    	this._strict = !this._strict
-    	this._view.renderStrict(this._strict);
-  	}
-  
+	strictMode() {
+		this._strict = !this._strict;
+		this._view.renderStrict(this._strict);
+	}
+
 }
 
 

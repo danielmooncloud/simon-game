@@ -1,7 +1,7 @@
 class Panel {
 	constructor(color, num) {
 		this._color = color;
-		this._audio = new Audio(`https://s3.amazonaws.com/freecodecamp/simonSound${num}.mp3`)
+		this._audio = new Audio(`https://s3.amazonaws.com/freecodecamp/simonSound${num}.mp3`);
 	}
 
 	get color () {
@@ -16,7 +16,7 @@ class Panel {
 
 class ErrorPanel {
 	constructor() {
-		this._audio = new Audio("http://www.soundjay.com/misc/fail-buzzer-01.wav")
+		this._audio = new Audio("http://www.soundjay.com/misc/fail-buzzer-01.wav");
 	}
 
 	get color() {
@@ -28,4 +28,4 @@ class ErrorPanel {
 	}
 }
 
-export {Panel, ErrorPanel}
+export {Panel, ErrorPanel};

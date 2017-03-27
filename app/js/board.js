@@ -10,7 +10,7 @@ export default class Board {
 		this._error = new ErrorPanel();
 		this._colors.forEach((color, i) => {
 			this._panels[color] = new Panel(color, i + 1);
-		})
+		});
 		for(let i = 0; i < 20; i++) {
 			let random = Math.floor(Math.random() * 4);
 			let color = this._colors[random];

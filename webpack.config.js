@@ -23,6 +23,10 @@ module.exports = {
 			{
 				test: /\.png?/,
 				loader: "file-loader?outputPath=images/"
+			},
+			{
+				test: /\.js?/,
+				loaders: ["babel-loader", "eslint-loader"]
 			}
 		]
 	},
