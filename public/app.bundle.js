@@ -6,9 +6,9 @@
 /******/ 	function __webpack_require__(moduleId) {
 /******/
 /******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId])
+/******/ 		if(installedModules[moduleId]) {
 /******/ 			return installedModules[moduleId].exports;
-/******/
+/******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 6);
+/******/ 	return __webpack_require__(__webpack_require__.s = 4);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -125,16 +125,13 @@ var Game = function () {
 
 			var counter = 0;
 			var interval = setInterval(function () {
-				var panel = _this._board.sequence[counter];
-				_this._view.renderPanel(panel);
+				_this._view.renderPanel(_this._board.sequence[counter]);
 				counter++;
 				if (counter > num) {
 					clearInterval(interval);
 					setTimeout(function () {
 						_this._userTurn = true;
-						if (num === _this._moveNumber) {
-							_this.incrementMoveNumber();
-						}
+						if (num === _this._moveNumber) _this.incrementMoveNumber();
 					}, 700);
 				}
 			}, 800);
@@ -146,47 +143,34 @@ var Game = function () {
 
 			var error = this._board.error;
 			setTimeout(function () {
-				_this2._view.renderPanel(error);
+				return _this2._view.renderPanel(error);
 			}, 800);
 		}
 	}, {
 		key: "wrongMove",
 		value: function wrongMove(color) {
-			if (color !== this._board.sequence[this._moveTracker - 1].color) {
-				return true;
-			}
-			return false;
+			return color !== this._board.sequence[this._moveTracker - 1].color;
 		}
 	}, {
 		key: "rightMove",
 		value: function rightMove() {
-			if (this._moveNumber === this._moveTracker) {
-				return true;
-			}
-			return false;
+			return this._moveNumber === this._moveTracker;
 		}
 	}, {
 		key: "lastMove",
 		value: function lastMove() {
-			if (this._moveNumber === this._board.sequence.length) {
-				return true;
-			}
-			return false;
+			return this._moveNumber === this._board.sequence.length;
 		}
 	}, {
 		key: "victory",
 		value: function victory() {
 			var _this3 = this;
 
-			var sequence = this._board.sequence;
 			var counter = 0;
 			var interval = setInterval(function () {
-				var panel = sequence[counter];
-				_this3._view.renderPanel(panel);
+				_this3._view.renderPanel(_this3._board.sequence[counter]);
 				counter++;
-				if (counter === sequence.length) {
-					clearInterval(interval);
-				}
+				if (counter === 20) clearInterval(interval);
 			}, 200);
 		}
 	}, {
@@ -194,35 +178,28 @@ var Game = function () {
 		value: function userMove(color) {
 			var _this4 = this;
 
-			if (this._gameOn && this._userTurn) {
-				var panel = this._board.panels[color];
-				this._view.renderPanel(panel);
-				this._moveTracker++;
+			if (!this._gameOn || !this._userTurn) return;
+			var panel = this._board.panels[color];
+			this._view.renderPanel(panel);
+			this._moveTracker++;
+			this._userTurn = false;
 
-				if (this.wrongMove(color) && !this._strict) {
-					this._userTurn = false;
-					this.errorSound();
-					setTimeout(function () {
-						_this4.replay(_this4._moveNumber - 1);
-					}, 1200);
-					this._moveTracker = 0;
-				} else if (this.wrongMove(color) && this._strict) {
-					this._userTurn = false;
-					this.errorSound();
-					setTimeout(function () {
-						_this4.restart();
-					}, 1200);
-				} else if (this.rightMove() && !this.lastMove()) {
-					this._userTurn = false;
-					this.replay(this._moveNumber);
-					this._moveTracker = 0;
-				} else if (this.rightMove() && this.lastMove()) {
-					this._userTurn = false;
-					setTimeout(function () {
-						_this4.victory();
-					}, 500);
-				}
-			}
+			if (this.wrongMove(color)) {
+				this.errorSound();
+				if (this.strict) return setTimeout(function () {
+					return _this4.restart();
+				}, 1200);
+				setTimeout(function () {
+					return _this4.replay(_this4._moveNumber - 1);
+				}, 1200);
+				this._moveTracker = 0;
+			} else if (this.rightMove()) {
+				if (this.lastMove()) return setTimeout(function () {
+					return _this4.victory();
+				}, 500);
+				this.replay(this._moveNumber);
+				this._moveTracker = 0;
+			} else this._userTurn = true;
 		}
 	}, {
 		key: "restart",
@@ -10084,7 +10061,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 	return jQuery;
 });
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)(module)))
 
 /***/ }),
 /* 2 */
@@ -10105,7 +10082,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _panel = __webpack_require__(4);
+var _panel = __webpack_require__(5);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -10153,6 +10130,69 @@ exports.default = Board;
 
 /***/ }),
 /* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function($) {
+
+__webpack_require__(2);
+
+var _game = __webpack_require__(0);
+
+var _game2 = _interopRequireDefault(_game);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+$(document).ready(function () {
+
+	var gui = {
+		init: function init() {
+			this.cacheDom();
+			this.bindEvents();
+		},
+		cacheDom: function cacheDom() {
+			this.$main = $(".main");
+			this.$panel = this.$main.find(".col-xs-6");
+			this.$start = this.$main.find(".start");
+			this.$strict = this.$main.find(".strict");
+			this.$display = this.$main.find(".display");
+			this.$light = this.$main.find(".light");
+		},
+		bindEvents: function bindEvents() {
+			this.$panel.click(function () {
+				var $id = $(this).attr("id");
+				game.userMove($id);
+			});
+			this.$start.click(function () {
+				game.restart();
+			});
+			this.$strict.click(function () {
+				game.strictMode();
+			});
+		},
+		renderPanel: function renderPanel(panel) {
+			var $panelColor = $("#" + panel.color);
+			panel.audio.play();
+			$panelColor.addClass("activated");
+			setTimeout(function () {
+				$panelColor.removeClass("activated");
+			}, 300);
+		},
+		renderDisplay: function renderDisplay(text) {
+			this.$display.html("<h2>" + text + "</h2>");
+		},
+		renderStrict: function renderStrict(bool) {
+			if (bool) this.$light.addClass("redbutton");else this.$light.removeClass("redbutton");
+		}
+	};
+
+	var game = new _game2.default();
+	game.init(gui);
+});
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+
+/***/ }),
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10215,7 +10255,7 @@ exports.Panel = Panel;
 exports.ErrorPanel = ErrorPanel;
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10243,69 +10283,6 @@ module.exports = function (module) {
 	}
 	return module;
 };
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function($) {
-
-__webpack_require__(2);
-
-var _game = __webpack_require__(0);
-
-var _game2 = _interopRequireDefault(_game);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-$(document).ready(function () {
-
-	var gui = {
-		init: function init() {
-			this.cacheDom();
-			this.bindEvents();
-		},
-		cacheDom: function cacheDom() {
-			this.$main = $(".main");
-			this.$panel = this.$main.find(".col-xs-6");
-			this.$start = this.$main.find(".start");
-			this.$strict = this.$main.find(".strict");
-			this.$display = this.$main.find(".display");
-			this.$light = this.$main.find(".light");
-		},
-		bindEvents: function bindEvents() {
-			this.$panel.click(function () {
-				var $id = $(this).attr("id");
-				game.userMove($id);
-			});
-			this.$start.click(function () {
-				game.restart();
-			});
-			this.$strict.click(function () {
-				game.strictMode();
-			});
-		},
-		renderPanel: function renderPanel(panel) {
-			var $panelColor = $("#" + panel.color);
-			panel.audio.play();
-			$panelColor.addClass("activated");
-			setTimeout(function () {
-				$panelColor.removeClass("activated");
-			}, 300);
-		},
-		renderDisplay: function renderDisplay(text) {
-			this.$display.html("<h2>" + text + "</h2>");
-		},
-		renderStrict: function renderStrict(bool) {
-			if (bool) this.$light.addClass("redbutton");else this.$light.removeClass("redbutton");
-		}
-	};
-
-	var game = new _game2.default();
-	game.init(gui);
-});
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ })
 /******/ ]);

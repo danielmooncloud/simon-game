@@ -20,34 +20,24 @@ $(document).ready(function() {
 		},
 		
 		bindEvents() {
-			this.$panel.click(function() {
-				const $id = $(this).attr("id");
-				game.userMove($id);
-			});
-			this.$start.click(() => {
-				game.restart();
-			});
-			this.$strict.click(() => {
-				game.strictMode();
-			});
+			this.$panel.click(function() {game.userMove($(this).attr("id"));});
+			this.$start.click(() => game.restart());
+			this.$strict.click(() => game.strictMode());
 		},
 
 		renderPanel(panel) {
 			const $panelColor = $("#" + panel.color);
 			panel.audio.play();
 			$panelColor.addClass("activated");
-			setTimeout(() => {
-				$panelColor.removeClass("activated");
-			}, 300);
+			setTimeout(() => $panelColor.removeClass("activated"), 300);
 		},
 
 		renderDisplay(text) {
 			this.$display.html("<h2>" + text + "</h2>");
 		},
 
-		renderStrict(bool) {
-			if(bool) this.$light.addClass("redbutton");
-			else this.$light.removeClass("redbutton");
+		renderStrict(strict) {
+			strict ? this.$light.addClass("redbutton") : this.$light.removeClass("redbutton");
 		}
 		
 	};

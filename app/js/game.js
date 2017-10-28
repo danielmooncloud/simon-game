@@ -34,16 +34,13 @@ export default class Game {
 	replay(num) {
 		let counter = 0;
 		const interval = setInterval(() => {
-			var panel = this._board.sequence[counter];
-			this._view.renderPanel(panel);
+			this._view.renderPanel(this._board.sequence[counter]);
 			counter++;
 			if(counter > num) {
 				clearInterval(interval);
 				setTimeout(() => {
 					this._userTurn = true;
-					if(num === this._moveNumber) {
-						this.incrementMoveNumber();
-					}
+					if(num === this._moveNumber) this.incrementMoveNumber();
 				}, 700);
 			}
 		}, 800);
@@ -51,83 +48,53 @@ export default class Game {
 
 	errorSound() {
 		const error = this._board.error;
-		setTimeout(() => {
-			this._view.renderPanel(error);  
-		}, 800);     
+		setTimeout(() => this._view.renderPanel(error), 800);     
 	}
 
 	wrongMove(color) {
-		if(color !== this._board.sequence[this._moveTracker - 1].color) {
-			return true;
-		}
-		return false;
+		return color !== this._board.sequence[this._moveTracker - 1].color;
 	}
 
 	rightMove() {
-		if(this._moveNumber === this._moveTracker) {
-			return true;
-		}
-		return false;
+		return this._moveNumber === this._moveTracker;
 	}
 
 	lastMove() {
-		if(this._moveNumber === this._board.sequence.length) {
-			return true;
-		}
-		return false;
+		return this._moveNumber === this._board.sequence.length;
 	}
 
 	victory() {
-		const sequence = this._board.sequence;
 		let counter = 0;
 		const interval = setInterval(() => {
-			let panel = sequence[counter];
-			this._view.renderPanel(panel);
+			this._view.renderPanel(this._board.sequence[counter]);
 			counter++; 
-			if(counter === sequence.length) {
-				clearInterval(interval);
-			}
+			if(counter === 20) clearInterval(interval);
 		}, 200);
 	}
 
 	userMove(color) {
-		if(this._gameOn && this._userTurn) {
-			var panel = this._board.panels[color];
-			this._view.renderPanel(panel);
-			this._moveTracker++;
+		if(!this._gameOn || !this._userTurn) return;
+		const panel = this._board.panels[color];
+		this._view.renderPanel(panel);
+		this._moveTracker++;
+		this._userTurn = false;
 
+		if(this.wrongMove(color)) {
+			this.errorSound();
+			if(this._strict) return setTimeout(() => this.restart(), 1200);
+			setTimeout(() => this.replay(this._moveNumber - 1), 1200);
+			this._moveTracker = 0;
+		}
 
-			if(this.wrongMove(color) && !this._strict) {
-				this._userTurn = false;
-				this.errorSound();
-				setTimeout(() => {
-					this.replay(this._moveNumber - 1);
-				}, 1200);
-				this._moveTracker = 0;
-			}
+		else if(this.rightMove()) {
+			if(this.lastMove()) return setTimeout(() => this.victory(), 500);
+			this.replay(this._moveNumber);
+			this._moveTracker = 0;
+		}
 
-			else if(this.wrongMove(color) && this._strict) {
-				this._userTurn = false;
-				this.errorSound();
-				setTimeout(() => {
-					this.restart();
-				}, 1200);
-			}
-
-			else if(this.rightMove() && !this.lastMove()) {
-				this._userTurn = false;
-				this.replay(this._moveNumber);
-				this._moveTracker = 0;
-			}
-
-			else if(this.rightMove() && this.lastMove()) {
-				this._userTurn = false;
-				setTimeout(() => {
-					this.victory();
-				}, 500);
-			}
-		}	
-	}
+		else this._userTurn = true;
+	}	
+	
 
 	restart() {
 		this.resetSwitches();
