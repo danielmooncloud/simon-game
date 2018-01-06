@@ -34,7 +34,6 @@
     "imports-loader": "^0.7.1",
     "jquery": "^3.2.1",
     "json-loader": "^0.5.4",
-    "node-sass": "^4.5.0",
     "resolve-url-loader": "^2.0.2",
     "sass-loader": "^6.0.3",
     "style-loader": "^0.15.0",
@@ -43,6 +42,7 @@
     "webpack-dev-server": "^2.4.2"
   },
   "dependencies": {
-    "eslint": "^3.18.0"
+    "eslint": "^3.18.0",
+    "node-sass": "^4.7.2"
   }
 }

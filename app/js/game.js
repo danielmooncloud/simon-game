@@ -1,111 +1,139 @@
 import Board from "./board";
+import pubSub from "./pubsub";
 
 
 export default class Game {
 	constructor() {
-		this._board = new Board();
-		this._gameOn = false;
-		this._userTurn = false;
-		this._moveNumber = 0;
-		this._moveTracker = 0;
-		this._strict = false;
+		this.board = new Board();
+		this.gameOn = false;
+		this.userTurn = false;
+		this.moveNumber = 0;
+		this.moveTracker = 0;
+		this.strict = false;
+		this.cacheDom();
+		this.bindEvents();
 	}
 
-	set view(view) {
-		this._view = view;
+	cacheDom() {
+		this.$main = $(".main");
+		this.$panel = this.$main.find(".col-xs-6");
+		this.$start = this.$main.find(".start");
+		this.$strict = this.$main.find(".strict");
 	}
 
-	init(view) {
-		this.view = view;
-		this._view.init();
-	}
-
-	incrementMoveNumber() {
-		this._moveNumber++;
-		this._view.renderDisplay(this._moveNumber);
-	}
-
-	resetSwitches() {
-		this._gameOn = true;
-		this._userTurn = false;
-		this._moveNumber = this._moveTracker = 0;
+	bindEvents() {
+		this.$panel.click((e) => {
+			this.userMove(e.target.id);
+		});
+		this.$start.click(() => {
+			this.restart();
+		});
+		this.$strict.click(() => {
+			this.strictMode();
+		});
 	}
 
 	replay(num) {
 		let counter = 0;
+		this.moveTracker = 0;
 		const interval = setInterval(() => {
-			this._view.renderPanel(this._board.sequence[counter]);
+			pubSub.publish("updatePanel", this.board.sequence[counter]);
 			counter++;
 			if(counter > num) {
 				clearInterval(interval);
 				setTimeout(() => {
-					this._userTurn = true;
-					if(num === this._moveNumber) this.incrementMoveNumber();
+					this.userTurn = true;
+					//if num === this.moveNumber, its playing the next move after a right answer
+					//if num < this.moveNumber, its replaying due to a wrong answer
+					if(num === this.moveNumber) {
+						this.moveNumber++;
+						pubSub.publish("updateDisplay", this.moveNumber);
+					}
 				}, 700);
 			}
 		}, 800);
 	}
 
 	errorSound() {
-		const error = this._board.error;
-		setTimeout(() => this._view.renderPanel(error), 800);     
+		const error = this.board.error;
+		setTimeout(() => {
+			pubSub.publish("updatePanel", error);
+		}, 800);     
 	}
 
 	wrongMove(color) {
-		return color !== this._board.sequence[this._moveTracker - 1].color;
+		return color !== this.board.sequence[this.moveTracker - 1].color;
 	}
 
 	rightMove() {
-		return this._moveNumber === this._moveTracker;
+		return this.moveNumber === this.moveTracker;
 	}
 
-	lastMove() {
-		return this._moveNumber === this._board.sequence.length;
+	endOfGame() {
+		return this.moveNumber === this.board.sequence.length;
 	}
 
+	//This function is only called if the player beats the game
 	victory() {
 		let counter = 0;
 		const interval = setInterval(() => {
-			this._view.renderPanel(this._board.sequence[counter]);
-			counter++; 
-			if(counter === 20) clearInterval(interval);
+			if(this.board.sequence[counter]) {
+				pubSub.publish("updatePanel", this.board.sequence[counter]);
+				counter++;
+			} else {
+				clearInterval(interval);
+				this.gameOn = false;
+				pubSub.publish("updateDisplay", "");
+			}
 		}, 200);
 	}
 
 	userMove(color) {
-		if(!this._gameOn || !this._userTurn) return;
-		const panel = this._board.panels[color];
-		this._view.renderPanel(panel);
-		this._moveTracker++;
-		this._userTurn = false;
+		if(this.gameOn && this.userTurn) {
+			pubSub.publish("updatePanel", this.board.panels[color]);
+			this.moveTracker++;
+			this.userTurn = false;
 
-		if(this.wrongMove(color)) {
-			this.errorSound();
-			if(this._strict) return setTimeout(() => this.restart(), 1200);
-			setTimeout(() => this.replay(this._moveNumber - 1), 1200);
-			this._moveTracker = 0;
+			if(this.wrongMove(color) && this.strict) {
+				this.errorSound();
+				setTimeout(() => {
+					this.restart();
+				}, 1200);
+			
+			} else if(this.wrongMove(color) && !this.strict) {
+				this.errorSound();
+				setTimeout(() => {
+					this.replay(this.moveNumber - 1);
+				}, 1200);
+			
+			} else if(this.rightMove() && this.endOfGame()) {
+				//The game has been beaten and the victory sequence is played
+				setTimeout(() => {
+					this.victory();
+				}, 500);
+			
+			} else if(this.rightMove() && !this.endOfGame()) {
+				this.replay(this.moveNumber);
+			
+			} else {
+				this.userTurn = true;
+			}
 		}
-
-		else if(this.rightMove()) {
-			if(this.lastMove()) return setTimeout(() => this.victory(), 500);
-			this.replay(this._moveNumber);
-			this._moveTracker = 0;
-		}
-
-		else this._userTurn = true;
-	}	
-	
+	}
 
 	restart() {
-		this.resetSwitches();
-		this._view.renderDisplay(0);
-		this._board = new Board();
+		this.gameOn = true;
+		this.userTurn = false;
+		this.moveNumber = this.moveTracker = 0;
+		pubSub.publish("updateDisplay", 0);
+		this.board = new Board();
 		this.replay(0);
 	}
 
+
 	strictMode() {
-		this._strict = !this._strict;
-		this._view.renderStrict(this._strict);
+		this.strict = !this.strict;
+		pubSub.publish("updateStrict", this.strict);
 	}
 
 }
