@@ -1,65 +1,225 @@
-
+@include font-face('Orbitron');
 
 body {
-  background-color: $grey;
-  @include image('background');
+    background-color: $grey;
+    @include image('background');
+    font-family: $stack-orbitron;
+    margin: 200px auto;
+    max-width: 500px; 
 }
 
 .main {
-  border-radius: 50%;
-  overflow: hidden;
-  cursor: pointer;
-  border: 5px solid $black;
+    position: relative;
+    height: 500px;
+    width: 500px;
+    padding: 0;
+    padding-right: -20px;
+    margin: 0 auto;
+    margin-top: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+    border: 5px solid $black;
+    @media #{$break-phone} {
+        width: 400px;
+        height: 400px;
+    }
+
+    .row {
+        height: 50%;
+        width: 100%;  
+        margin: 0 auto;
+        padding: 0;
+        position: absolute;
+
+        .col-xs-6 {
+            height: 100%; 
+            width: 50%;
+            border: 1px solid $black;
+            &:active {
+                filter: brightness(140%);
+            }
+        }
+        
+        #green {
+            background-color: $panel-green;
+            position: absolute;
+            top: 0%;
+            left: 0%;
+        }
+
+        #red {
+            background-color: $panel-red;
+            position: absolute;
+            top: 0%;
+            left: 50%;
+        }
+
+        #yellow {
+            background-color: $panel-yellow;
+            position: absolute;
+            top: 0%;
+            left: 0%;
+        }
+
+        #blue {
+            background-color: $panel-blue;
+            position: absolute;
+            top: 0%;
+            left: 50%;
+        }
+
+        .activated {
+            filter: brightness(140%); 
+        }
+    }
+
+    .center {
+        position: absolute;
+        width: 220px;
+        height: 220px;
+        top: 135px;
+        left: 135px;
+        z-index: 100;
+        @extend %centered;
+        border: 3px solid $grey;
+        border-radius: 50%;
+        background-color: $black;
+        @media #{$break-phone} {
+            width: 200px;
+            height: 200px;
+            top: 100px;
+            left: 100px;
+        }
+
+        .simon {
+            margin-top: 40px;
+            margin-bottom: -70px;
+            color: $white;
+            @media #{$break-phone} {
+                margin-top: 30px;
+                margin-bottom: -45px;
+            }
+
+            h1 {
+                @media #{$break-phone} {
+                    font-size: 18px;
+                }
+            }
+        }
+
+        .starttext {
+            width: 30px;
+            height: 20px;
+            padding: 0;
+            margin-top: 15px;
+            margin-left: 75px;
+            color: $white; 
+            @media #{$break-phone} {
+                margin-left: 65px;
+            }
+
+            h6 {
+                margin: 0;
+            }
+        }
+
+        .stricttext {
+            margin-top: -20px;
+            margin-left: 115px;
+            padding: 0;
+            width: 30px;
+            height: 20px;
+            color: $white; 
+            @media #{$break-phone} {
+                margin-left: 100px;
+            }
+            h6 {
+                margin: 0;
+            }
+        }
+
+        .display {
+            border: 2px solid $black;
+            background-color: rgba(120,0,0,1);
+            color: $red;
+            height: 30px;
+            width: 40%;
+            margin: 90px auto 0px;
+            @media #{$break-phone} {
+                width: 80px;
+                height: 15%;
+                margin: 70px auto 40px;
+            }
+
+            h2 {
+                margin: 5px auto;
+                @media #{$break-phone} {
+                    font-size: 20px;
+                    margin-top: 0px;
+                } 
+            }
+        }
+
+        .light {
+            width: 10px;
+            height: 10px;
+            margin-left: 150px;
+            margin-top: 20px;
+            margin-bottom: -30px;
+            border: 1px solid $black;
+            border-radius: 50%;
+            @media #{$break-phone} {
+                margin-left: 95px;
+                margin-top: -30px;
+                margin-bottom: 0px;
+            } 
+        }
+
+        button {
+            margin-top: 15px;
+            margin-left: 5px;
+            margin-right: 5px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: $yellow;
+            outline: none;
+            @media #{$break-phone} {
+                margin-top: 12px;
+                width: 7px;
+                height: 10px;
+            }
+        }
+
+        h6 {
+            @media #{$break-phone} {
+                font-size: 6px;
+            }
+        }
+    }
 }
 
-.col-xs-6 {
-  border: 1px solid $black; 
-}
 
-.center {
-  border: 3px solid $grey;
-  border-radius: 50%;
-  background-color: $black;
-}
 
-#green {
-  background-color: $panel-green;
-}
 
-#red {
-  background-color: $panel-red;
-}
 
-#yellow {
-  background-color: $panel-yellow;
-}
 
-#blue {
-  background-color: $panel-blue;
-}
 
-.redbutton {
-  background-color: $green;
-}
 
-.activated {
- filter: brightness(140%); 
-}
 
-.col-xs-6:active {
-  filter: brightness(140%);
-}
 
-.display h2 {
-  margin: 5px auto;
-}
 
-.display {
-  border: 2px solid $black;
-  background-color: rgba(120,0,0,1);
-}
 
-.light {
-  border: 1px solid $black;
-  border-radius: 50%;
-}
+
+
+
+
+
+
+
+
+
+
+
+
