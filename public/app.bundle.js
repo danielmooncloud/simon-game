@@ -63,172 +63,11 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 6);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _board = __webpack_require__(3);
-
-var _board2 = _interopRequireDefault(_board);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Game = function () {
-	function Game() {
-		_classCallCheck(this, Game);
-
-		this._board = new _board2.default();
-		this._gameOn = false;
-		this._userTurn = false;
-		this._moveNumber = 0;
-		this._moveTracker = 0;
-		this._strict = false;
-	}
-
-	_createClass(Game, [{
-		key: "init",
-		value: function init(view) {
-			this.view = view;
-			this._view.init();
-		}
-	}, {
-		key: "incrementMoveNumber",
-		value: function incrementMoveNumber() {
-			this._moveNumber++;
-			this._view.renderDisplay(this._moveNumber);
-		}
-	}, {
-		key: "resetSwitches",
-		value: function resetSwitches() {
-			this._gameOn = true;
-			this._userTurn = false;
-			this._moveNumber = this._moveTracker = 0;
-		}
-	}, {
-		key: "replay",
-		value: function replay(num) {
-			var _this = this;
-
-			var counter = 0;
-			var interval = setInterval(function () {
-				_this._view.renderPanel(_this._board.sequence[counter]);
-				counter++;
-				if (counter > num) {
-					clearInterval(interval);
-					setTimeout(function () {
-						_this._userTurn = true;
-						if (num === _this._moveNumber) _this.incrementMoveNumber();
-					}, 700);
-				}
-			}, 800);
-		}
-	}, {
-		key: "errorSound",
-		value: function errorSound() {
-			var _this2 = this;
-
-			var error = this._board.error;
-			setTimeout(function () {
-				return _this2._view.renderPanel(error);
-			}, 800);
-		}
-	}, {
-		key: "wrongMove",
-		value: function wrongMove(color) {
-			return color !== this._board.sequence[this._moveTracker - 1].color;
-		}
-	}, {
-		key: "rightMove",
-		value: function rightMove() {
-			return this._moveNumber === this._moveTracker;
-		}
-	}, {
-		key: "lastMove",
-		value: function lastMove() {
-			return this._moveNumber === this._board.sequence.length;
-		}
-	}, {
-		key: "victory",
-		value: function victory() {
-			var _this3 = this;
-
-			var counter = 0;
-			var interval = setInterval(function () {
-				_this3._view.renderPanel(_this3._board.sequence[counter]);
-				counter++;
-				if (counter === 20) clearInterval(interval);
-			}, 200);
-		}
-	}, {
-		key: "userMove",
-		value: function userMove(color) {
-			var _this4 = this;
-
-			if (!this._gameOn || !this._userTurn) return;
-			var panel = this._board.panels[color];
-			this._view.renderPanel(panel);
-			this._moveTracker++;
-			this._userTurn = false;
-
-			if (this.wrongMove(color)) {
-				this.errorSound();
-				if (this.strict) return setTimeout(function () {
-					return _this4.restart();
-				}, 1200);
-				setTimeout(function () {
-					return _this4.replay(_this4._moveNumber - 1);
-				}, 1200);
-				this._moveTracker = 0;
-			} else if (this.rightMove()) {
-				if (this.lastMove()) return setTimeout(function () {
-					return _this4.victory();
-				}, 500);
-				this.replay(this._moveNumber);
-				this._moveTracker = 0;
-			} else this._userTurn = true;
-		}
-	}, {
-		key: "restart",
-		value: function restart() {
-			this.resetSwitches();
-			this._view.renderDisplay(0);
-			this._board = new _board2.default();
-			this.replay(0);
-		}
-	}, {
-		key: "strictMode",
-		value: function strictMode() {
-			this._strict = !this._strict;
-			this._view.renderStrict(this._strict);
-		}
-	}, {
-		key: "view",
-		set: function set(view) {
-			this._view = view;
-		}
-	}]);
-
-	return Game;
-}();
-
-exports.default = Game;
-
-/***/ }),
-/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10061,16 +9900,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 	return jQuery;
 });
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)(module)))
 
 /***/ }),
-/* 2 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 3 */
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10080,119 +9913,370 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _panel = __webpack_require__(5);
+var pubSub = {
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	events: {},
 
-var Board = function () {
-	function Board() {
+	subscribe: function subscribe(eventName, fn) {
+		this.events[eventName] = this.events[eventName] || [];
+		this.events[eventName].push(fn);
+	},
+	unsubscribe: function unsubscribe(eventName, fn) {
 		var _this = this;
 
-		_classCallCheck(this, Board);
-
-		this._colors = ["red", "green", "yellow", "blue"];
-		this._sequence = [];
-		this._panels = {};
-		this._error = new _panel.ErrorPanel();
-		this._colors.forEach(function (color, i) {
-			_this._panels[color] = new _panel.Panel(color, i + 1);
-		});
-		for (var i = 0; i < 20; i++) {
-			var random = Math.floor(Math.random() * 4);
-			var color = this._colors[random];
-			this._sequence[i] = new _panel.Panel(color, random + 1);
+		if (this.events[eventName]) {
+			this.events[eventName].forEach(function (fxn, i) {
+				if (fxn === fn) {
+					_this.events[eventName].splice(i, 1);
+				}
+			});
+		}
+	},
+	publish: function publish(eventName, data) {
+		if (this.events[eventName]) {
+			this.events[eventName].forEach(function (fn) {
+				fn(data);
+			});
 		}
 	}
+};
 
-	_createClass(Board, [{
-		key: "panels",
-		get: function get() {
-			return this._panels;
-		}
-	}, {
-		key: "sequence",
-		get: function get() {
-			return this._sequence;
-		}
-	}, {
-		key: "error",
-		get: function get() {
-			return this._error;
-		}
-	}]);
-
-	return Board;
-}();
-
-exports.default = Board;
+exports.default = pubSub;
 
 /***/ }),
-/* 4 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function($) {
 
-__webpack_require__(2);
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
 
-var _game = __webpack_require__(0);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _game2 = _interopRequireDefault(_game);
+var _board = __webpack_require__(5);
+
+var _board2 = _interopRequireDefault(_board);
+
+var _pubsub = __webpack_require__(1);
+
+var _pubsub2 = _interopRequireDefault(_pubsub);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-$(document).ready(function () {
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var gui = {
-		init: function init() {
-			this.cacheDom();
-			this.bindEvents();
-		},
-		cacheDom: function cacheDom() {
+var Game = function () {
+	function Game() {
+		_classCallCheck(this, Game);
+
+		this.board = new _board2.default();
+		this.gameOn = false;
+		this.userTurn = false;
+		this.moveNumber = 0;
+		this.moveTracker = 0;
+		this.strict = false;
+		this.cacheDom();
+		this.bindEvents();
+	}
+
+	_createClass(Game, [{
+		key: "cacheDom",
+		value: function cacheDom() {
 			this.$main = $(".main");
 			this.$panel = this.$main.find(".col-xs-6");
 			this.$start = this.$main.find(".start");
 			this.$strict = this.$main.find(".strict");
-			this.$display = this.$main.find(".display");
-			this.$light = this.$main.find(".light");
-		},
-		bindEvents: function bindEvents() {
-			this.$panel.click(function () {
-				var $id = $(this).attr("id");
-				game.userMove($id);
+		}
+	}, {
+		key: "bindEvents",
+		value: function bindEvents() {
+			var _this = this;
+
+			this.$panel.click(function (e) {
+				_this.userMove(e.target.id);
 			});
 			this.$start.click(function () {
-				game.restart();
+				_this.restart();
 			});
 			this.$strict.click(function () {
-				game.strictMode();
+				_this.strictMode();
 			});
-		},
-		renderPanel: function renderPanel(panel) {
+		}
+	}, {
+		key: "replay",
+		value: function replay(num) {
+			var _this2 = this;
+
+			var counter = 0;
+			this.moveTracker = 0;
+			var interval = setInterval(function () {
+				_pubsub2.default.publish("updatePanel", _this2.board.sequence[counter]);
+				counter++;
+				if (counter > num) {
+					clearInterval(interval);
+					setTimeout(function () {
+						_this2.userTurn = true;
+						//if num === this.moveNumber, its playing the next move after a right answer
+						//if num < this.moveNumber, its replaying due to a wrong answer
+						if (num === _this2.moveNumber) {
+							_this2.moveNumber++;
+							_pubsub2.default.publish("updateDisplay", _this2.moveNumber);
+						}
+					}, 700);
+				}
+			}, 800);
+		}
+	}, {
+		key: "errorSound",
+		value: function errorSound() {
+			var error = this.board.error;
+			setTimeout(function () {
+				_pubsub2.default.publish("updatePanel", error);
+			}, 800);
+		}
+	}, {
+		key: "wrongMove",
+		value: function wrongMove(color) {
+			return color !== this.board.sequence[this.moveTracker - 1].color;
+		}
+	}, {
+		key: "rightMove",
+		value: function rightMove() {
+			return this.moveNumber === this.moveTracker;
+		}
+	}, {
+		key: "endOfGame",
+		value: function endOfGame() {
+			return this.moveNumber === this.board.sequence.length;
+		}
+
+		//This function is only called if the player beats the game
+
+	}, {
+		key: "victory",
+		value: function victory() {
+			var _this3 = this;
+
+			var counter = 0;
+			var interval = setInterval(function () {
+				if (_this3.board.sequence[counter]) {
+					_pubsub2.default.publish("updatePanel", _this3.board.sequence[counter]);
+					counter++;
+				} else {
+					clearInterval(interval);
+					_this3.gameOn = false;
+					_pubsub2.default.publish("updateDisplay", "");
+				}
+			}, 200);
+		}
+	}, {
+		key: "userMove",
+		value: function userMove(color) {
+			var _this4 = this;
+
+			if (this.gameOn && this.userTurn) {
+				_pubsub2.default.publish("updatePanel", this.board.panels[color]);
+				this.moveTracker++;
+				this.userTurn = false;
+
+				if (this.wrongMove(color) && this.strict) {
+					this.errorSound();
+					setTimeout(function () {
+						_this4.restart();
+					}, 1200);
+				} else if (this.wrongMove(color) && !this.strict) {
+					this.errorSound();
+					setTimeout(function () {
+						_this4.replay(_this4.moveNumber - 1);
+					}, 1200);
+				} else if (this.rightMove() && this.endOfGame()) {
+					//The game has been beaten and the victory sequence is played
+					setTimeout(function () {
+						_this4.victory();
+					}, 500);
+				} else if (this.rightMove() && !this.endOfGame()) {
+					this.replay(this.moveNumber);
+				} else {
+					this.userTurn = true;
+				}
+			}
+		}
+	}, {
+		key: "restart",
+		value: function restart() {
+			this.gameOn = true;
+			this.userTurn = false;
+			this.moveNumber = this.moveTracker = 0;
+			_pubsub2.default.publish("updateDisplay", 0);
+			this.board = new _board2.default();
+			this.replay(0);
+		}
+	}, {
+		key: "strictMode",
+		value: function strictMode() {
+			this.strict = !this.strict;
+			_pubsub2.default.publish("updateStrict", this.strict);
+		}
+	}]);
+
+	return Game;
+}();
+
+exports.default = Game;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function($) {
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _pubsub = __webpack_require__(1);
+
+var _pubsub2 = _interopRequireDefault(_pubsub);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var View = function () {
+	function View() {
+		_classCallCheck(this, View);
+
+		this.cacheDom();
+		this.bindEvents();
+	}
+
+	_createClass(View, [{
+		key: "cacheDom",
+		value: function cacheDom() {
+			this.$main = $(".main");
+			this.$display = this.$main.find(".display");
+			this.$light = this.$main.find(".light");
+		}
+	}, {
+		key: "bindEvents",
+		value: function bindEvents() {
+			var _this = this;
+
+			_pubsub2.default.subscribe("updatePanel", function (panel) {
+				_this.renderPanel(panel);
+			});
+			_pubsub2.default.subscribe("updateDisplay", function (num) {
+				_this.renderDisplay(num);
+			});
+			_pubsub2.default.subscribe("updateStrict", function (strict) {
+				_this.renderStrict(strict);
+			});
+		}
+	}, {
+		key: "renderPanel",
+		value: function renderPanel(panel) {
 			var $panelColor = $("#" + panel.color);
 			panel.audio.play();
 			$panelColor.addClass("activated");
 			setTimeout(function () {
-				$panelColor.removeClass("activated");
+				return $panelColor.removeClass("activated");
 			}, 300);
-		},
-		renderDisplay: function renderDisplay(text) {
-			this.$display.html("<h2>" + text + "</h2>");
-		},
-		renderStrict: function renderStrict(bool) {
-			if (bool) this.$light.addClass("redbutton");else this.$light.removeClass("redbutton");
 		}
-	};
+	}, {
+		key: "renderDisplay",
+		value: function renderDisplay(num) {
+			this.$display.html("<h2>" + num + "</h2>");
+		}
+	}, {
+		key: "renderStrict",
+		value: function renderStrict(strict) {
+			strict ? this.$light.addClass("redbutton") : this.$light.removeClass("redbutton");
+		}
+	}]);
 
-	var game = new _game2.default();
-	game.init(gui);
-});
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+	return View;
+}();
+
+exports.default = View;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 
 /***/ }),
 /* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _panel = __webpack_require__(7);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Board = function Board() {
+	var _this = this;
+
+	_classCallCheck(this, Board);
+
+	this.colors = ["red", "green", "yellow", "blue"];
+	this.sequence = [];
+	this.panels = {};
+	this.error = new _panel.ErrorPanel();
+	this.colors.forEach(function (color, i) {
+		_this.panels[color] = new _panel.Panel(color, i + 1);
+	});
+	for (var i = 0; i < 20; i++) {
+		var random = Math.floor(Math.random() * 4);
+		var color = this.colors[random];
+		this.sequence[i] = new _panel.Panel(color, random + 1);
+	}
+};
+
+exports.default = Board;
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function($) {
+
+__webpack_require__(4);
+
+var _game = __webpack_require__(2);
+
+var _game2 = _interopRequireDefault(_game);
+
+var _view = __webpack_require__(3);
+
+var _view2 = _interopRequireDefault(_view);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+$(document).ready(function () {
+	new _view2.default();
+	new _game2.default();
+});
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+
+/***/ }),
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10255,7 +10339,7 @@ exports.Panel = Panel;
 exports.ErrorPanel = ErrorPanel;
 
 /***/ }),
-/* 6 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
