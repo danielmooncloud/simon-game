@@ -10241,9 +10241,11 @@ var Board = function Board() {
 	this.colors.forEach(function (color, i) {
 		_this.panels[color] = new _panel.Panel(color, i + 1);
 	});
+	var random = void 0,
+	    color = void 0;
 	for (var i = 0; i < 20; i++) {
-		var random = Math.floor(Math.random() * 4);
-		var color = this.colors[random];
+		random = Math.floor(Math.random() * 4);
+		color = this.colors[random];
 		this.sequence[i] = new _panel.Panel(color, random + 1);
 	}
 };
@@ -10286,54 +10288,20 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Panel = function () {
-	function Panel(color, num) {
-		_classCallCheck(this, Panel);
+var Panel = function Panel(color, num) {
+	_classCallCheck(this, Panel);
 
-		this._color = color;
-		this._audio = new Audio("https://s3.amazonaws.com/freecodecamp/simonSound" + num + ".mp3");
-	}
+	this.color = color;
+	this.audio = new Audio("https://s3.amazonaws.com/freecodecamp/simonSound" + num + ".mp3");
+};
 
-	_createClass(Panel, [{
-		key: "color",
-		get: function get() {
-			return this._color;
-		}
-	}, {
-		key: "audio",
-		get: function get() {
-			return this._audio;
-		}
-	}]);
+var ErrorPanel = function ErrorPanel() {
+	_classCallCheck(this, ErrorPanel);
 
-	return Panel;
-}();
-
-var ErrorPanel = function () {
-	function ErrorPanel() {
-		_classCallCheck(this, ErrorPanel);
-
-		this._audio = new Audio("http://www.soundjay.com/misc/fail-buzzer-01.wav");
-	}
-
-	_createClass(ErrorPanel, [{
-		key: "color",
-		get: function get() {
-			return "error";
-		}
-	}, {
-		key: "audio",
-		get: function get() {
-			return this._audio;
-		}
-	}]);
-
-	return ErrorPanel;
-}();
+	this.audio = new Audio("http://www.soundjay.com/misc/fail-buzzer-01.wav");
+};
 
 exports.Panel = Panel;
 exports.ErrorPanel = ErrorPanel;

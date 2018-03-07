@@ -15,7 +15,6 @@ body {
     padding: 0;
     padding-right: -20px;
     margin: 0 auto;
-    margin-top: 50px;
     border-radius: 50%;
     overflow: hidden;
     cursor: pointer;
@@ -23,6 +22,16 @@ body {
     @media #{$break-phone} {
         width: 400px;
         height: 400px;
+    }
+
+    .one {
+        top: 0;
+        left: 0;
+    }
+
+    .two {
+        top: 50%;
+        left: 0;
     }
 
     .row {
@@ -40,6 +49,8 @@ body {
                 filter: brightness(140%);
             }
         }
+
+        
         
         #green {
             background-color: $panel-green;
@@ -197,10 +208,5 @@ body {
                 font-size: 6px;
             }
         }
-    }
-
-    .two {
-        top: 50%;
-        left: 0;
     }
 }
