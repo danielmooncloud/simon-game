@@ -11,9 +11,10 @@ export default class Board {
 		this.colors.forEach((color, i) => {
 			this.panels[color] = new Panel(color, i + 1);
 		});
+		let random, color;
 		for(let i = 0; i < 20; i++) {
-			let random = Math.floor(Math.random() * 4);
-			let color = this.colors[random];
+			random = Math.floor(Math.random() * 4);
+			color = this.colors[random];
 			this.sequence[i] = new Panel(color, random + 1);
 		}
 	}
